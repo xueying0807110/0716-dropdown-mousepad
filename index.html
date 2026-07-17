@@ -351,6 +351,26 @@
     const optionClickCounts = {};
     const optionHoverCounts = {};
 
+    function productFieldSuffix(productName) {
+      return String(productName || '').replace(/[^A-Za-z0-9]/g, '');
+    }
+
+    function buildTrackingFields() {
+      const fields = {};
+
+      productDisplayOrder.forEach((productName, index) => {
+        fields[`productOrder${index + 1}`] = productName;
+      });
+
+      Object.keys(optionClickCounts).forEach((productName) => {
+        const suffix = productFieldSuffix(productName);
+        fields[`clickCount_${suffix}`] = String(optionClickCounts[productName]);
+        fields[`hoverCount_${suffix}`] = String(optionHoverCounts[productName]);
+      });
+
+      return fields;
+    }
+
     let totalClicks = 0;
     let optionClicks = 0;
     let imageSwitches = 0;
@@ -564,9 +584,7 @@
         dropdownOpened: dropdownOpened,
         dropdownOpenCount: String(dropdownOpenCount),
         optionReviewed: optionReviewed,
-        productDisplayOrder: [...productDisplayOrder],
-        optionClickCounts: { ...optionClickCounts },
-        optionHoverCounts: { ...optionHoverCounts }
+        ...buildTrackingFields()
       }, '*');
     });
 
