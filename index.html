@@ -540,7 +540,7 @@
         leaveClicks += 1;
       }
 
-      if (Date.now() - pageShownAt < minimumViewTimeMs) {
+      if (!selectedProductName && Date.now() - pageShownAt < minimumViewTimeMs) {
         invalidButtonClicks += 1;
         decisionMessage.textContent = 'please view the products for at least 10 seconds';
         decisionMessage.classList.add('is-visible');
